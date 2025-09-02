@@ -13,12 +13,26 @@ def build_board():
 
 # prettyprint for board
 def show_board(board):
+    line = ""
+    print('HERE IS THE BOARD')
     for row in board:
         print(row)
+        
 
 # def moves
     # def shoot
         #changes value of "slot" from S for submarine or C for carrier to X
+def shoot(board,row,column):
+    print("shots fired")
+    i,j=board[row][column]
+    if i is not 0:
+        board[row][column] = ('x',j)
+        return True
+    elif j is not 0:
+        board[row][column] = (i,'x')
+    else:
+        board[row][column] = ('x','x')
+
     # def place
 def place(board, ori, row, column,obj,depth):
     (depth0,depth1)=board[row][column]
@@ -71,12 +85,39 @@ def place(board, ori, row, column,obj,depth):
 # def checkover
     #iterate through both board and see if any 'S'or 'C' are still left
     # if a board has none,print(board has lost),return True
+def checkover(board):
+    for row in board:
+        for i,j in row:
+            if i in ['s','c']:
+                return False
+            elif j in ['s','c']:
+                return False
+    else:
+        return True
 
+def play_turn(board):
+    # if board is empty, prompt for placement of subs and carriers
+    empty = checkover(board)
+    if empty:
+        print("LETS PLACE SOME PIECES ON THE BOARD")
+        x = "continue"
+        while x is not "exit":
+            ui = input('enter s to place submarine, c for carrier')
+            row = int() # add this stuff later
+    # play turn
+    # shoot coords
+    # hit/miss feedback
+    # return board
 # following code is to demnstrate board
 board = build_board()
 show_board(board)
 place(board,'r',5,5,'s',1)
 show_board(board)
+shoot(board,5,5)
+shoot(board,1,1)
+show_board(board)
+print(checkover(board))
+
 # main game
     # initialise players
         # build boards for players
@@ -89,3 +130,4 @@ show_board(board)
         #game_over = checkover([board1,board2])
         #play_turn(player1)
         #play_turn(player2)
+
