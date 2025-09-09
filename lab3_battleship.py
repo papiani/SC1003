@@ -8,15 +8,34 @@ def build_board():
     for i in range(10):
         board.append([])
         for x in range(10):
-            board[i].append((0,0))
+            board[i].append(('0','0'))
     return board
 
 # prettyprint for board
 def show_board(board):
     line = ""
-    print('HERE IS THE BOARD')
     for row in board:
         print(row)
+def censorprint(board):
+    tempy = []
+    rowindex = -1
+    for i in range(10):
+        tempy.append([])
+    for row in board:
+        rowindex+=1
+        for item in row:
+            i,j = item
+            if i in ['x','0']:
+                pass
+            else:
+                i='0'
+            if j in ['x','0']:
+                pass
+            else:
+                j='0'
+            tempy[rowindex].append((i,j))
+    show_board(tempy)
+            
         
 
 # def moves
@@ -25,10 +44,10 @@ def show_board(board):
 def shoot(board,row,column):
     print("shots fired")
     i,j=board[row][column]
-    if i is not 0:
+    if i is not '0':
         board[row][column] = ('x',j)
         return True
-    elif j is not 0:
+    elif j is not '0':
         board[row][column] = (i,'x')
     else:
         board[row][column] = ('x','x')
@@ -95,16 +114,24 @@ def checkover(board):
     else:
         return True
 
-def play_turn(board):
+def play_turn(boardself,boardopp):
     # if board is empty, prompt for placement of subs and carriers
-    empty = checkover(board)
+    empty = checkover(boardself)
     if empty:
         print("LETS PLACE SOME PIECES ON THE BOARD")
         x = "continue"
         while x is not "exit":
             ui = input('enter s to place submarine, c for carrier')
-            row = int() # add this stuff later
-    # play turn
+            row = int(input("which row?")) # add this stuff later
+            column = int(input("which column?"))
+            depth = int(input("what depth?"))
+            place(boardself,ui,row,column,depth)
+    else:
+        print('my board')
+        show_board(boardself)
+        print('target board')
+        censorprint(boardopp)
+
     # shoot coords
     # hit/miss feedback
     # return board
@@ -115,9 +142,7 @@ place(board,'r',5,5,'s',1)
 show_board(board)
 shoot(board,5,5)
 shoot(board,1,1)
-show_board(board)
-print(checkover(board))
-
+censorprint(board)
 # main game
     # initialise players
         # build boards for players
