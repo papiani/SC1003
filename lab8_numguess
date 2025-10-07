@@ -1,1 +1,85 @@
+import random
+WIDTH = 4
+numList = [1,2,3,4,5,6,7,8,9,0]
+############################################################
+# functionality: randomly generate the target number
+# input:
+# numList: the list with 10 digits
+# count: the number of digits to generate
+# output: a list with four digits (integers)
+def genNumbers(numList, count):
+    ## TODO ##
+    ## Shuffle the numList and return the shuffled list
+    numbers =[]
+    x = random.shuffle(numList)
+    for i in range(WIDTH):
+        numbers.append(numList[i])
+    print(numbers)
+    return numbers
+############################################################
+############################################################
+# functionality: obtain the guessing from users
+# input: None
+# output: a list with four digits (integers)
+def userGuess():
+    inputStr = input("Please input 4 digits: ")
+    ## TODO ##
+    guess = []
+    ## Check user input and ensure user entered correct
+    ## datatype and length of input.
+    while True:
+        if inputStr.isdigit() and len(inputStr) == 4 :
+            break
+        else:
+            inputStr = input("Bad input, Please input 4 digits: ")
+    for x in inputStr:
+        guess.append(int(x))
+    
+    ## TODO ##
+    ## Transfer the user input to guess list.
+    return guess
+############################################################
+############################################################
+# functionality: compare the user guessing with the target
+# input:
+# guessList: the list of four digits (user guessing)
+# answerList: the list of four digits (target)
+# output: a tuple (#A, #B)
+def checkGuess(guessList, answerList):
+    ## TODO ##
+    ## Check how many correct number entered by the user
+    ## and return the count (bulls, cows).
+    bulls = 0
+    cows = 0
+    correct =[]
+    for arrow in guessList:
+        for target in answerList:
+            if arrow == target:
+                bulls+=1
+                correct.append(arrow)
+    tempx = [item for item in guessList if item not in correct]
+    tempy = [item for item in answerList if item not in correct]
+    for x in tempx:
+        if x in tempy:
+            cows +=1
 
+    return (bulls, cows)
+############################################################
+############################################################
+# Main program putting all function together
+answer = genNumbers(numList, WIDTH)
+#print(answer) ## UNCOMMENT THIS TO SEE WHAT WAS THE
+## SHUFFLED LIST
+attemps = 0
+while True:
+    guesses = userGuess()
+    attemps += 1
+    #print(guesses)
+    result = checkGuess(guesses, answer)
+    #print(result)
+    if result[0] == 4:
+        print("You Win!!")
+        print("Attemps: ", attemps)
+        break
+    else:
+        print(result[0], "A (Bulls)", result[1], "B (Cows)")
